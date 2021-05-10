@@ -82,7 +82,7 @@ docker run -d -p 8000:8080 --restart=always --cap-add=SYS_ADMIN --name=dillinger
 ```
 
 ## Linux/WSL
-
+###### (success)
 ```
 cd example
 npm i
