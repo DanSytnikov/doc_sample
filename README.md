@@ -62,9 +62,9 @@ docker run -p 3000:80 example:dev
 
 ##### Blocker/error:
 ```
-Not Found - GET https://npm.pkg.github.com/@hireflix%2futils-constants - npm package "utils-constants" does not exist under owner "hireflix"
+Not Found - GET https://npm.pkg.github.com/@somelib%2futils-constants - npm package "utils-constants" does not exist under owner "somelib"
 npm ERR! 404
-npm ERR! 404  '@hireflix/utils-constants@1.0.0' is not in the npm registry.
+npm ERR! 404  '@somelib/utils-constants@1.0.0' is not in the npm registry.
 npm ERR! 404 You should bug the author to publish it (or use the name yourself!)
 npm ERR! 404 It was specified as a dependency of 'webapp-website'
 ```
