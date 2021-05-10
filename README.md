@@ -6,6 +6,8 @@ ExampleProject requires [Node.js](https://nodejs.org/) v10+ to run.
 
 ### Windows
 
+###### (failed. Steps to reproduce)
+
 ```sh
 cd example
 npm i
@@ -49,6 +51,8 @@ Error: graphql error
 
 
 ## Docker
+
+###### (failed. Steps to reproduce)
 
 ```sh
 cd example
