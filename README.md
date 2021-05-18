@@ -1,94 +1,57 @@
-# ExampleProject
+# Работа с гитом
 
-## Installation
+Перед каждым рабочим днём необходимо смёрджить свои локальные ветки с изменениями, которые лежат на гите. У каждого репозитория есть главная (или основная рабочая ветка `<mainbranch>`: `main`/`master`/`develop`), в которую делаются PR с других веток. После того, как рабочий день закончен, ваши изменения перепушиваются и/или мёрджатся в основную ветку. В ОБОИХ случаях необходимо эти изменения подтянуть. Иначе ваши локальные изменения не сопоставляются с опубликованными => коммиты дублируются => ветка ломается. Два сценария:
 
-ExampleProject requires [Node.js](https://nodejs.org/) v10+ to run.
+## Для работы в новой ветке после успешного закрытия ПР или для работы над новым функционалом:
 
-### Windows
-
-###### (failed. Steps to reproduce)
-
-```sh
-cd example
-npm i
-npm run server
+> <sup>Переключиться на основную ветку, чтобы подтянуть изменения:</sup>
 ```
-Open the second therminal:
-```sh
-npm run watch -t 3000
+git checkout <mainbranch>
 ```
-Open `localhost:3000`.
-
-For production environments (before starting server) ...
-
-```sh
-NODE_ENV=production
+> <sup>Убрать последние локальные изменения из основной ветки (убедитесь, что у вас не осталось не запушенных изменений, иначе они удалятся).</sup>
 ```
-
-##### Blocker/error:
-
+git reset --hard HEAD~1
 ```
-Error: graphql error
-    at /home/andrewpltnv/job/webapp-website/dist/server/index.js:276081:21
-    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
-  errors: [
-    Error: Request failed with status code 404
-        at createError (/home/andrewpltnv/job/webapp-website/dist/server/index.js:115663:15)
-        at settle (/home/andrewpltnv/job/webapp-website/dist/server/index.js:115884:12)
-        at IncomingMessage.handleStreamEnd (/home/andrewpltnv/job/webapp-website/dist/server/index.js:115024:11)
-        at IncomingMessage.emit (node:events:377:35)
-        at IncomingMessage.emit (node:domain:532:15)
-        at endReadableNT (node:internal/streams/readable:1312:12)
-        at processTicksAndRejections (node:internal/process/task_queues:83:21) {
-      config: [Object],
-      request: [ClientRequest],
-      response: [Object],
-      isAxiosError: true,
-      toJSON: [Function (anonymous)]
-    }
-  ]
+> <sup>Подтянуть все актуальные изменения основной ветки.</sup>
 ```
-
-
-## Docker
-
-###### (failed. Steps to reproduce)
-
-```sh
-cd example
-docker build -t example:dev .
-docker run -p 3000:80 example:dev
+git pull origin <mainbranch> --rebase
 ```
-
-##### Blocker/error:
+Теперь у вас актуальная версия проекта. Если знаете над чем точно будете работать, создавайте новую "фича"-ветку. Рекомендации по неймингу будут ниже. Если вы не создавали новую ветку, можете закоммитить изменения (НО не пушить), после чего переключиться на новую ветку.
 ```
-Not Found - GET https://npm.pkg.github.com/@somelib%2futils-constants - npm package "utils-constants" does not exist under owner "somelib"
-npm ERR! 404
-npm ERR! 404  '@somelib/utils-constants@1.0.0' is not in the npm registry.
-npm ERR! 404 You should bug the author to publish it (or use the name yourself!)
-npm ERR! 404 It was specified as a dependency of 'webapp-website'
+git checkout -b <branchname>
 ```
+и запушить ваши локальные коммиты. Все действия по ребейзу, переносу изменений на новую ветку и прочее должны происходить, когда весь код закоммичен и нет неиндексированных локальных изменений!
+#### Нейминг веток (Рекомендации):
+`<changes_type>/<commit_message>`
 
-Assumptions how to fix here (if you have).
+**changes_type** — тип изменений (например `feature/`, `bugfix/`, `style/`).
 
-```sh
-docker run -d -p 8000:8080 --restart=always --cap-add=SYS_ADMIN --name=dillinger <youruser>/dillinger:${package.json.version}
+**commit_message** — краткое описание проделанных в ветке изменений, должно соответствовать типу изменений (например `feature/login-logic`, `style/hero-section`, `bugfix/401-error`).  
+
+
+## Для продолжения работы в той же опубликованной ветке, если функционал не был закончен:
+
+> <sup>Подтянуть изменения, которые были запушены в рабочую ветку, чтобы смёрджить их с локальными (не важно, если там тот же код).</sup> 
 ```
-
-
-
-```sh
-127.0.0.1:8000
+git pull origin <workbranch> --rebase
 ```
-
-## Linux/WSL
-###### (success)
+> <sup>Подятнуть изменения, которые были добавлены другими разработчиками или ваши изменения, которые были смёрджены из ПР в основную ветку `<mainbranch>`.</sup>
 ```
-cd example
-npm i
-npm run server-watch
+git pull origin <mainbranch> --rebase
 ```
-Open `localhost:3000`
+Если всё сделано правильно, конфликтов быть не должно. Если конфликты возникли из-за изменений другого разработчика, аккуратно исправляем их, стараясь не удалить чужую работу. Проверяем работу функционала, которого задели конфликты. После внесенных изменений гит может потребовать запушить изменения с тегом `--force`, потому что локальная версия ветки (с исправленными конфликтами) не может засинхрониться с опубликованной веткой:
+```
+git push --force
+```
+<sup><sup>В других случаях `--force` не следует использовать.</sup></sup>
 
-No blockers.
+Вы всегда должны следить за тем, чтобы в рабочей ветке не оставалось неподтянутых изменений с основной (иначе вашу работу нельзя смёрджить => заказчик остается без деливери). Это можно легко проверить, зайдя на свою ветку на гите. 
 
+**Не используйте `git pull ` без тега `--rebase`! Иначе вы создаете merge request, что также засоряет ветку.**
+
+
+Если вы внесли много мелких правок — объедините ваши коммиты в один или несколько более сгруппированных. 
+```
+git rebase -i HEAD~<n>
+```
+Меняем коммиты в соответствие с инструкцией. Детальнее можно почитать здесь https://htmlacademy.ru/blog/boost/tools/how-to-squash-commits-and-why-it-is-needed или где-кгодно еще, но лучше всего описано, что за что отвечает в самом редакторе.  
