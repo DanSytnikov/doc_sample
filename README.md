@@ -8,7 +8,7 @@
 ```
 git checkout <mainbranch>
 ```
-> <sup>Убрать последние локальные изменения из основной ветки (убедитесь, что у вас не осталось не запушенных изменений, иначе они удалятся).</sup>
+> <sup>Убрать последние локальные изменения из основной ветки (на случай, если в прошлый раз забыли переключиться на рабочую ветку. Убедитесь, что у вас не осталось не запушенных изменений, иначе они удалятся).</sup>
 ```
 git reset --hard HEAD~1
 ```
@@ -54,4 +54,17 @@ git push --force
 ```
 git rebase -i HEAD~<n>
 ```
-Меняем коммиты в соответствие с инструкцией. Детальнее можно почитать здесь https://htmlacademy.ru/blog/boost/tools/how-to-squash-commits-and-why-it-is-needed или где-кгодно еще, но лучше всего описано, что за что отвечает в самом редакторе.  
+Меняем коммиты в соответствие с инструкцией. Детальнее можно почитать здесь https://htmlacademy.ru/blog/boost/tools/how-to-squash-commits-and-why-it-is-needed или где-кгодно еще, но лучше всего описано, что за что отвечает в самом редакторе. 
+```
+git push --force
+```
+
+**Вы должны знать и понимать, что делает каждая из перечисленных комманд.**
+
+
+| New branch       | Continue Workbranch                | Rebase |
+| ------------- |------------------| :----------|
+| `git checkout <mainbranch>`    | `git pull origin <workbranch> --rebase`    | `git rebase ih HEAD~<n>`
+| `git reset --hard HEAD~1`     | `git pull origin <mainbranch> --rebase` | <... changes>
+| `git pull origin <mainbranch> --rebase`  | <... changes>         | `git push --force` |
+| `git checkout -b <branchname>` | `git push --force`
