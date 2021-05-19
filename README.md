@@ -64,7 +64,7 @@ git push --force
 
 | New branch       | Continue Workbranch                | Rebase |
 | ------------- |------------------| :----------|
-| `git checkout <mainbranch>`    | `git pull origin <workbranch> --rebase`    | `git rebase ih HEAD~<n>`
+| `git checkout <mainbranch>`    | `git pull origin <workbranch> --rebase`    | `git rebase -i HEAD~<n>`
 | `git reset --hard HEAD~1`     | `git pull origin <mainbranch> --rebase` | <... changes>
 | `git pull origin <mainbranch> --rebase`  | <... changes>         | `git push --force` |
 | `git checkout -b <branchname>` | `git push --force`
